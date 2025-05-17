@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Foot Streaming</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 25px;
+      background: #111;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+      animation: fadeIn 1.5s ease-out;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 3rem;
+      background: linear-gradient(90deg, #00ffc8, #00bfff, #00ffc8);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientText 6s ease infinite;
+    }
+
+    p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 40px 20px;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .card {
+      background-color: #1b1b1b;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,255,174,0.1);
+      transition: transform 0.4s, box-shadow 0.4s;
+      animation: pulse 2.5s infinite;
+    }
+
+    .card:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 30px rgba(0,255,174,0.6);
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #00ffc8;
+      font-size: 1.3rem;
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      transition: color 0.3s;
+    }
+
+    .card a:hover {
+      color: #00bfff;
+    }
+
+    .card a img {
+      width: 100%;
+      height: 180px;
+      object-fit: contain;
+      border-radius: 15px;
+      transition: transform 0.4s, box-shadow 0.4s;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+    }
+
+    .card a img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0,255,200,0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
+      font-size: 0.9rem;
+    }
+
+    @keyframes gradientText {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px rgba(0,255,174,0.1); }
+      50% { box-shadow: 0 0 25px rgba(0,255,174,0.5); }
+      100% { box-shadow: 0 0 15px rgba(0,255,174,0.1); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚽ Live Foot en Direct</h1>
+    <p>Regarde les meilleurs matchs en temps réel avec image cliquable !</p>
+  </header>
+
+  <main id="live-links">
+    <!-- Liens injectés ici -->
+  </main>
+
+  <footer>
+    <p>&copy; 2025 - Tous droits réservés | AmiBa Groupe</p>
+  </footer>
+
+  <script>
+    const liens = [
+      {
+        nom: "Live Foot TV 1",
+        url: "https://www.koora-tv.com/",
+        image: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"
+      },
+      {
+        nom: "Live Foot TV 2",
+        url: "https://www.elitegoltv.org/home.php",
+        image: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg"
+      },
+      {
+        nom: "Live Foot TV 3",
+        url: "https://www.hesgoallive.com/",
+        image: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"
+      },
+      {
+        nom: "Live Foot TV 4",
+        url: "https://letzcricket.com/",
+        image: "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg"
+      }
+    ];
+
+    const container = document.getElementById("live-links");
+
+    liens.forEach((lien) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <a href="${lien.url}" target="_blank">
+          <img src="${lien.image}" alt="${lien.nom}">
+          ${lien.nom}
+        </a>
+      `;
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
