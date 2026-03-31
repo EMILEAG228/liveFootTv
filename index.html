@@ -1,234 +1,207 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" href="https://emileag228.github.io/AmiBa.Web/MyPhoto12_23_2024_10_02_17_PM.png" type="image/png">
-  <title>Live TV Premium | Style Koora</title>
-  <style>
-    :root {
-      --primary: #00ffc8;
-      --secondary: #1e90ff;
-      --accent: #ffd700;
-      --bg: #050505;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="https://emileag228.github.io/AmiBa.Web/MyPhoto12_23_2024_10_02_17_PM.png" type="image/png">
+    <title>Premium Live TV | Koora Elite</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: var(--bg);
-      color: #fff;
-      overflow-x: hidden;
-    }
+        :root {
+            --accent: #00e676; /* Vert sport */
+            --bg: #0a0e14;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+        }
 
-    /* Fond animé */
-    .bg-animation {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 50% 50%, #001f3f 0%, #000 100%);
-      z-index: -1;
-    }
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-    header {
-      text-align: center;
-      padding: 40px 20px;
-    }
+        header {
+            padding: 50px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, #16213e, transparent);
+        }
 
-    h1 {
-      font-size: clamp(1.8rem, 6vw, 3rem);
-      background: linear-gradient(90deg, var(--secondary), var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(0, 230, 118, 0.5);
+        }
 
-    /* GRILLE DE CARTES */
-    main {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 90%;
+        }
 
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 15px;
-      padding: 15px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
+        .channel-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
 
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary);
-      box-shadow: 0 10px 30px rgba(0, 255, 200, 0.2);
-    }
+        .channel-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(0, 230, 118, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    .card img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin-bottom: 10px;
-    }
+        .channel-card img {
+            width: 100%;
+            max-width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+            margin-bottom: 15px;
+        }
 
-    /* L'OVERLAY DU LECTEUR (STYLE KOORA TV) */
-    #video-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 9999;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+        .channel-card span {
+            display: block;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
 
-    .player-header {
-      width: 100%;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #111;
-      position: absolute;
-      top: 0;
-    }
+        /* LECTEUR OVERLAY */
+        #player-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 1000;
+            flex-direction: column;
+        }
 
-    .match-title {
-      color: var(--primary);
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin-left: 20px;
-    }
+        .player-nav {
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
 
-    .close-btn {
-      background: #ff4757;
-      color: white;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-right: 20px;
-    }
+        .close-btn {
+            background: #ff3e3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-    .iframe-container {
-      width: 95%;
-      max-width: 1100px;
-      aspect-ratio: 16/9;
-      background: #000;
-      box-shadow: 0 0 50px rgba(0, 0, 0, 1);
-      border: 1px solid #333;
-    }
+        .close-btn:hover { background: #ff0000; }
 
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+        .video-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    footer {
-      text-align: center;
-      padding: 30px;
-      font-size: 0.8rem;
-      opacity: 0.6;
-    }
+        iframe {
+            width: 100%;
+            max-width: 1100px;
+            height: 80%;
+            border: 2px solid #222;
+            border-radius: 10px;
+            background: #000;
+        }
 
-    /* Empêcher le défilement quand le lecteur est ouvert */
-    .no-scroll {
-      overflow: hidden;
-    }
-  </style>
+        footer {
+            margin-top: auto;
+            padding: 40px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="bg-animation"></div>
+<header>
+    <h1>Arena Streaming</h1>
+    <p>Sélectionnez une chaîne pour regarder le direct</p>
+</header>
 
-  <header>
-    <h1>🏆 Live TV Center</h1>
-    <p>Cliquez sur un logo pour lancer le direct</p>
-  </header>
+<main class="grid-container" id="links-grid"></main>
 
-  <!-- L'Overlay "Koora" -->
-  <div id="video-overlay">
-    <div class="player-header">
-      <span class="match-title" id="current-match-name">Chargement...</span>
-      <button class="close-btn" onclick="closePlayer()">FERMER ✖</button>
+<div id="player-overlay">
+    <div class="player-nav">
+        <h2 id="video-title" style="margin:0; color: var(--accent);">Direct</h2>
+        <button class="close-btn" onclick="closeVideo()">FERMER ✕</button>
     </div>
-    <div class="iframe-container">
-      <iframe id="main-player" src="" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+    <div class="video-wrapper">
+        <iframe id="main-iframe" src="" allowfullscreen allow="autoplay"></iframe>
     </div>
-  </div>
+</div>
 
-  <main id="live-links">
-    <!-- Injecté par JS -->
-  </main>
+<footer>
+    <p id="copy-text"></p>
+</footer>
 
-  <footer>
-    <p id="copyright"></p>
-  </footer>
-
-  <script>
-    const liens = [
-      {
-        nom: "Real Madrid Live",
-        url: "https://www.koora-tv.com/",
-        image: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"
-      },
-      {
-        nom: "PSG Live",
-        url: "https://www.elitegoltv.org/home.php",
-        image: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg"
-      },
-      {
-        nom: "FC Barcelona Live",
-        url: "https://m.livetv.sx/frx/",
-        image: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"
-      },
-      {
-        nom: "Chelsea Live",
-        url: "https://letzcricket.com/",
-        image: "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg"
-      }
+<script>
+    const channels = [
+        { name: "Real Madrid TV", url: "https://www.koora-tv.com/", img: "https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" },
+        { name: "PSG TV", url: "https://www.elitegoltv.org/home.php", img: "https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg" },
+        { name: "Barça TV", url: "https://m.livetv.sx/frx/", img: "https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" },
+        { name: "Chelsea TV", url: "https://letzcricket.com/", img: "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg" }
     ];
 
-    const container = document.getElementById("live-links");
-    const overlay = document.getElementById("video-overlay");
-    const player = document.getElementById("main-player");
-    const title = document.getElementById("current-match-name");
+    const grid = document.getElementById('links-grid');
+    const overlay = document.getElementById('player-overlay');
+    const iframe = document.getElementById('main-iframe');
+    const title = document.getElementById('video-title');
 
-    liens.forEach((lien) => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-          <img src="${lien.image}" alt="${lien.nom}">
-          <div style="font-weight:600">${lien.nom}</div>
-      `;
-      
-      card.onclick = () => {
-        title.innerText = "Direct : " + lien.nom;
-        player.src = lien.url;
-        overlay.style.display = "flex";
-        document.body.classList.add("no-scroll");
-      };
-      
-      container.appendChild(card);
+    // Génération des cartes
+    channels.forEach(ch => {
+        const card = document.createElement('div');
+        card.className = 'channel-card';
+        card.innerHTML = `
+            <img src="${ch.img}" alt="${ch.name}">
+            <span>${ch.name}</span>
+        `;
+        card.onclick = () => {
+            title.innerText = ch.name;
+            iframe.src = ch.url;
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        };
+        grid.appendChild(card);
     });
 
-    function closePlayer() {
-      overlay.style.display = "none";
-      player.src = ""; // Stop la vidéo et le son
-      document.body.classList.remove("no-scroll");
+    function closeVideo() {
+        overlay.style.display = 'none';
+        iframe.src = "";
+        document.body.style.overflow = 'auto';
     }
 
-    document.getElementById("copyright").innerHTML =
-      `&copy; ${new Date().getFullYear()} - AmiBa Groupe & MARC AZ`;
-  </script>
+    document.getElementById("copy-text").innerHTML = `&copy; ${new Date().getFullYear()} - AmiBa Groupe & MARC AZ`;
+</script>
+
 </body>
 </html>
