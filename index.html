@@ -4,132 +4,198 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" href="https://emileag228.github.io/AmiBa.Web/MyPhoto12_23_2024_10_02_17_PM.png" type="image/png">
-  <title>Live TV</title>
+  <title>Live TV Premium</title>
   <style>
+    :root {
+      --primary: #00ffc8;
+      --secondary: #1e90ff;
+      --accent: #ffd700;
+      --bg: #050505;
+    }
+
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: radial-gradient(circle at top, #001f3f, #000);
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      background: var(--bg);
       color: #fff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
       overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Fond animé en arrière-plan */
+    .bg-animation {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 50%, #001f3f 0%, #000 100%);
+      z-index: -1;
     }
 
     header {
       text-align: center;
-      padding: 30px;
-      background: linear-gradient(90deg, #0a0a0a, #001f3f);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-      animation: fadeIn 1.5s ease-out;
+      padding: 50px 20px;
+      animation: slideDown 1s ease-out;
     }
 
     h1 {
       margin: 0;
-      font-size: 3.5rem;
-      font-weight: bold;
-      background: linear-gradient(90deg, #1e90ff, #00ffc8, #ffd700);
-      background-size: 300% 300%;
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+      background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: gradientText 6s ease infinite;
+      animation: shine 3s linear infinite;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
     }
 
-    p {
-      font-size: 1.2rem;
-      opacity: 0.9;
+    /* Zone du Lecteur Vidéo */
+    #video-container {
+      display: none; /* Caché par défaut */
+      width: 90%;
+      max-width: 1000px;
+      margin: 20px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 50px rgba(0, 255, 200, 0.3);
+      border: 2px solid var(--primary);
+      animation: zoomIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
+    .iframe-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* Ratio 16:9 */
+      height: 0;
+    }
+
+    iframe {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      border: none;
+      background: #000;
+    }
+
+    .close-btn {
+      background: #ff4757;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      transition: 0.3s;
+    }
+
+    .close-btn:hover { background: #ff6b81; }
+
+    /* Grille de cartes */
     main {
-      flex: 1;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      padding: 40px 20px;
-      animation: fadeIn 2s ease-in;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: auto;
     }
 
     .card {
-      background: linear-gradient(145deg, #0a0a0a, #001f3f);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 25px;
       padding: 20px;
       text-align: center;
-      box-shadow: 0 0 25px rgba(30,144,255,0.4);
-      transition: transform 0.4s, box-shadow 0.4s;
-      animation: pulse 3s infinite;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: conic-gradient(transparent, var(--primary), transparent 30%);
+      animation: rotate 4s linear infinite;
+      opacity: 0;
+      transition: 0.4s;
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card-content {
+      position: relative;
+      background: #0a0a0a;
+      border-radius: 20px;
+      padding: 20px;
+      z-index: 1;
+      height: 100%;
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    }
+
+    .card h3 {
+      margin: 10px 0 0;
+      color: var(--primary);
+      font-size: 1.4rem;
     }
 
     .card:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 40px rgba(255,215,0,0.8);
-    }
-
-    .card a {
-      text-decoration: none;
-      color: #00ffc8;
-      font-size: 1.3rem;
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-      transition: color 0.3s;
-    }
-
-    .card a:hover {
-      color: #ffd700;
-    }
-
-    .card a img {
-      width: 100%;
-      height: 180px;
-      object-fit: contain;
-      border-radius: 15px;
-      transition: transform 0.4s, box-shadow 0.4s;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-    }
-
-    .card a img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(30,144,255,0.7);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
 
     footer {
       text-align: center;
-      padding: 20px;
-      background: linear-gradient(90deg, #0a0a0a, #001f3f);
-      font-size: 0.95rem;
-      color: #ccc;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.8);
+      padding: 40px;
+      opacity: 0.7;
     }
 
-    @keyframes gradientText {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* Animations */
+    @keyframes shine {
+      to { background-position: 200% center; }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
-    @keyframes pulse {
-      0% { box-shadow: 0 0 20px rgba(30,144,255,0.3); }
-      50% { box-shadow: 0 0 40px rgba(255,215,0,0.6); }
-      100% { box-shadow: 0 0 20px rgba(30,144,255,0.3); }
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
+  <div class="bg-animation"></div>
+
   <header>
-    <h1>🏆 Champions League & LaLiga ... Foot Live</h1>
-    <p>Regarde les plus grands matchs en direct avec style !</p>
+    <h1>Foot Live Elite</h1>
+    <p>Sélectionnez un match pour lancer le streaming direct</p>
   </header>
 
+  <!-- Lecteur dynamique -->
+  <section id="video-container">
+    <button class="close-btn" onclick="closePlayer()">✖ FERMER LE LECTEUR</button>
+    <div class="iframe-wrapper">
+      <iframe id="main-player" src="" allowfullscreen></iframe>
+    </div>
+  </section>
+
   <main id="live-links">
-    <!-- Liens injectés ici -->
+    <!-- Injecté par JS -->
   </main>
 
   <footer>
@@ -161,23 +227,38 @@
     ];
 
     const container = document.getElementById("live-links");
+    const playerContainer = document.getElementById("video-container");
+    const playerIframe = document.getElementById("main-player");
 
+    // Création des cartes
     liens.forEach((lien) => {
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <a href="${lien.url}" target="_blank">
+        <div class="card-content">
           <img src="${lien.image}" alt="${lien.nom}">
-          ${lien.nom}
-        </a>
+          <h3>${lien.nom}</h3>
+        </div>
       `;
+      
+      // Action au clic
+      card.onclick = () => {
+        playerIframe.src = lien.url;
+        playerContainer.style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      
       container.appendChild(card);
     });
 
-    // Copyright dynamique
-    const year = new Date().getFullYear();
+    function closePlayer() {
+      playerContainer.style.display = "none";
+      playerIframe.src = ""; // Stop la vidéo
+    }
+
+    // Copyright
     document.getElementById("copyright").innerHTML =
-      `&copy; ${year} - Tous droits réservés | AmiBa Groupe & MARC AZ`;
+      `&copy; ${new Date().getFullYear()} - AmiBa Groupe & MARC AZ`;
   </script>
 </body>
 </html>
