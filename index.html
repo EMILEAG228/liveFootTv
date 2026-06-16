@@ -6,15 +6,16 @@
     <title>EMILE AG LIVE FOOT TV | World Cup Experience</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #D4AF37;
-            --gold-glow: rgba(212, 175, 55, 0.6);
+            --gold-glow: rgba(212, 175, 55, 0.4);
             --primary: #00E0B8;
             --bg: #030508;
-            --card-bg: rgba(18, 26, 36, 0.6);
-            --border: rgba(212, 175, 55, 0.2);
+            --card-bg: rgba(18, 26, 36, 0.7);
+            --border: rgba(212, 175, 55, 0.15);
+            --radius: 20px;
         }
 
         * {
@@ -23,97 +24,94 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Manrope', sans-serif;
             background: var(--bg);
-            color: white;
+            color: #fff;
             text-align: center;
-            overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            isolation: isolate;
         }
 
-        /* Background effet stade + particules */
+        /* Background stade + grain */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(0, 224, 184, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></svg>');
-            background-size: cover, cover, 3px 3px;
+                radial-gradient(60% 50% at 15% 20%, rgba(0, 224, 184, 0.12), transparent 60%),
+                radial-gradient(50% 40% at 85% 85%, rgba(212, 175, 55, 0.08), transparent 60%),
+                var(--bg);
             z-index: -2;
-            animation: bgMove 20s ease-in-out infinite alternate;
         }
 
         body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(3,5,8,0) 0%, rgba(3,5,8,0.9) 100%);
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
             z-index: -1;
-        }
-
-        @keyframes bgMove {
-            0% { transform: scale(1) rotate(0deg); }
-            100% { transform: scale(1.1) rotate(2deg); }
+            pointer-events: none;
         }
 
         header {
-            padding: 60px 20px 40px;
+            padding: 5rem 1.25rem 3rem;
             position: relative;
         }
 
         .header-badge {
-            display: inline-block;
-            padding: 6px 18px;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4rem 1.1rem;
             border: 1px solid var(--gold);
             border-radius: 50px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 700;
             letter-spacing: 3px;
             color: var(--gold);
-            margin-bottom: 20px;
-            animation: fadeInDown 1s ease;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            animation: fadeIn 0.8s ease;
         }
 
         h1 {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
             margin: 0;
-            background: linear-gradient(135deg, #fff 0%, var(--gold) 50%, #fff 100%);
+            background: linear-gradient(135deg, #fff 20%, var(--gold) 50%, #fff 80%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: 4px;
-            text-shadow: 0 0 40px var(--gold-glow);
-            animation: fadeInDown 1s ease 0.2s backwards, titleGlow 3s ease-in-out infinite alternate;
+            line-height: 0.95;
+            animation: fadeIn 0.8s ease 0.1s backwards, glow 4s ease-in-out infinite alternate;
         }
 
-        @keyframes titleGlow {
-            0% { filter: drop-shadow(0 0 20px var(--gold-glow)); }
-            100% { filter: drop-shadow(0 0 35px var(--gold-glow)); }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 15px var(--gold-glow)); }
+            to { filter: drop-shadow(0 0 30px var(--gold-glow)); }
         }
 
         header p {
-            margin-top: 15px;
+            margin-top: 1rem;
             font-weight: 300;
-            opacity: 0.7;
-            font-size: 1.1rem;
-            animation: fadeInDown 1s ease 0.4s backwards;
+            opacity: 0.8;
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            max-width: 600px;
+            margin-inline: auto;
+            animation: fadeIn 0.8s ease 0.2s backwards;
         }
 
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 40px 20px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 2rem;
+            padding: 2.5rem 1.25rem 4rem;
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -121,134 +119,151 @@
         .channel-link {
             position: relative;
             text-decoration: none;
-            color: white;
+            color: inherit;
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 30px 20px;
+            border-radius: var(--radius);
+            padding: 2rem 1.5rem;
             border: 1px solid var(--border);
-            backdrop-filter: blur(12px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(16px) saturate(120%);
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow: hidden;
-            animation: fadeInUp 0.8s ease backwards;
+            will-change: transform;
+            animation: fadeInUp 0.6s ease backwards;
         }
 
-        /* Effet lumière qui traverse */
+        .channel-link:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
+        }
+
+        /* Border gradient animé au hover */
         .channel-link::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.15), transparent);
-            transform: rotate(45deg);
-            transition: all 0.6s ease;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--gold), var(--primary), var(--gold));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
             opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .channel-link:hover::before {
-            animation: shine 1.5s ease;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+            opacity: 1;
         }
 
         .channel-link:hover {
-            transform: translateY(-15px) scale(1.03);
-            border-color: var(--gold);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--gold-glow);
+            transform: translateY(-12px);
+            background: rgba(18, 26, 36, 0.85);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 40px var(--gold-glow);
+        }
+
+        .channel-link:active {
+            transform: translateY(-6px) scale(0.98);
         }
 
         .channel-link img {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
-            transition: transform 0.4s ease;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .channel-link:hover img {
-            transform: scale(1.15) rotate(3deg);
+            transform: scale(1.1) rotate(-2deg);
         }
 
         .channel-link span {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            font-size: 1.75rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 1rem;
+            line-height: 1;
         }
 
         .live-badge {
             position: relative;
-            background: linear-gradient(135deg, #ff3838, #ff0000);
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+            background: #ff1f1f;
+            padding: 0.45rem 1rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
             font-weight: 800;
-            letter-spacing: 1px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            display: flex;
+            letter-spacing: 1.2px;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 0.5rem;
+            box-shadow: 0 4px 16px rgba(255, 31, 31, 0.4);
         }
 
         .live-badge::before {
             content: '';
-            width: 8px;
-            height: 8px;
-            background: white;
+            width: 7px;
+            height: 7px;
+            background: #fff;
             border-radius: 50%;
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(1.5); }
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            50% { opacity: 1; box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
         }
 
         footer {
-            margin-top: 60px;
-            padding: 30px 20px;
-            border-top: 1px solid rgba(212, 175, 55, 0.1);
-            opacity: 0.6;
-            font-size: 0.9rem;
+            margin-top: 2rem;
+            padding: 2rem 1.25rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.08);
+            opacity: 0.5;
+            font-size: 0.85rem;
         }
 
-        /* Animations d'entrée */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Délai cascade pour les cartes */
-        .channel-link:nth-child(1) { animation-delay: 0.2s; }
-        .channel-link:nth-child(2) { animation-delay: 0.3s; }
-        .channel-link:nth-child(3) { animation-delay: 0.4s; }
-        .channel-link:nth-child(4) { animation-delay: 0.5s; }
+        /* Délai cascade */
+        .channel-link:nth-child(1) { animation-delay: 0.1s; }
+        .channel-link:nth-child(2) { animation-delay: 0.2s; }
+        .channel-link:nth-child(3) { animation-delay: 0.3s; }
+        .channel-link:nth-child(4) { animation-delay: 0.4s; }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            header { padding: 40px 15px 20px; }
-            .container { gap: 20px; padding: 20px 15px; }
-            .channel-link { padding: 25px 15px; }
+        @media (max-width: 640px) {
+            header { padding: 3rem 1rem 2rem; }
+            .container { gap: 1.25rem; padding: 1.5rem 1rem 3rem; }
+            .channel-link { padding: 1.75rem 1.25rem; }
+            .channel-link img { width: 80px; height: 80px; }
+        }
+
+        /* Réduction des animations si l'utilisateur préfère */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-badge">WORLD CUP EDITION</div>
+        <div class="header-badge">World Cup Edition</div>
         <h1>⚽ EMILE AG LIVE FOOT TV</h1>
         <p>Sélectionnez votre match et vivez l’expérience en direct</p>
     </header>
@@ -284,25 +299,28 @@
         ];
 
         const container = document.getElementById('channel-list');
+        const fragment = document.createDocumentFragment();
 
         matches.forEach(match => {
             const a = document.createElement('a');
             a.href = match.lien;
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
+            // Plus de target="_blank" → ouvre dans le même onglet
             a.className = "channel-link";
+            a.setAttribute('aria-label', `Regarder ${match.nom} en direct`);
             
             a.innerHTML = `
-                <img src="${match.img}" alt="${match.nom}" loading="lazy">
+                <img src="${match.img}" alt="" loading="lazy" decoding="async">
                 <span>${match.nom}</span>
                 <div class="live-badge">EN DIRECT</div>
             `;
             
-            container.appendChild(a);
+            fragment.appendChild(a);
         });
 
-        document.getElementById("copyright").innerHTML = 
-            `&copy; ${new Date().getFullYear()} - EMILE AG LIVE FOOT TV | All Rights Reserved`;
+        container.appendChild(fragment);
+
+        document.getElementById("copyright").textContent = 
+            `© ${new Date().getFullYear()} EMILE AG LIVE FOOT TV | All Rights Reserved`;
     </script>
 </body>
 </html>
